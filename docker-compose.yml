@@ -1,5 +1,5 @@
 # docker-compose.yml
-# Final version using the absolute path for Baota/1panel compatibility.
+# Final version using absolute paths for Baota/1panel compatibility.
 
 version: '3.8'
 
@@ -18,10 +18,10 @@ services:
     container_name: gorgias_app_nginx
     restart: unless-stopped
     ports:
-      # We changed this port previously to avoid conflicts.
+      # Using a safer port to avoid conflicts.
       - "8282:80" 
     volumes:
-      # Use the absolute path for the volumes as well.
+      # Use absolute paths for the volumes as well.
       - /opt/1panel/docker/compose/gorgias/nginx.conf:/etc/nginx/conf.d/default.conf:ro
       - /opt/1panel/docker/compose/gorgias/frontend:/usr/share/nginx/html/frontend:ro
     depends_on:
