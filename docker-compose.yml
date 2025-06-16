@@ -1,29 +1,28 @@
 # docker-compose.yml
-# This file defines and runs your multi-container Docker application.
+# Final version using the absolute path for Baota/1panel compatibility.
 
 version: '3.8'
 
 services:
-  # The Python Flask Backend Application
-  # This container runs your app.py file using gunicorn.
   backend:
-    build: . # Tells Docker to build an image from the Dockerfile in this directory.
+    build:
+      # This tells Docker exactly where to find your source code and Dockerfile.
+      context: /opt/1panel/docker/compose/gorgias
     container_name: gorgias_app_backend
     restart: unless-stopped
     expose:
-      - 5001 # Exposes port 5001 only to other services in this Docker network.
+      - 5001
 
-  # Nginx Reverse Proxy (Web Server)
-  # This container serves your frontend HTML and directs API traffic to the backend.
   nginx:
     image: nginx:latest
     container_name: gorgias_app_nginx
     restart: unless-stopped
     ports:
-      - "8282:80" # Maps port 80 of your VPS to port 80 of the container.
-                # Your Baota/aaPanel will handle SSL and proxying to this port.
+      # We changed this port previously to avoid conflicts.
+      - "8282:80" 
     volumes:
-      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro # Mounts your Nginx config file.
-      - ./frontend:/usr/share/nginx/html/frontend:ro   # Mounts your frontend files.
+      # Use the absolute path for the volumes as well.
+      - /opt/1panel/docker/compose/gorgias/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - /opt/1panel/docker/compose/gorgias/frontend:/usr/share/nginx/html/frontend:ro
     depends_on:
       - backend
