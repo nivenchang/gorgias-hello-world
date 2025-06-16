@@ -1,0 +1,6 @@
+requirements.txt
+Lists the Python libraries needed for the backend.
+
+Flask
+Flask-Cors
+gunicorn
